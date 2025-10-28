@@ -1,9 +1,9 @@
 site_name: MecaMate Signalisation Documentation
 site_description: Python library for robot signaling LED, sound (audio, microphone), emergency stop
-site_url: https://iudhael.github.io/mecamatesignal/
+site_url: https://iudhael.github.io/StripLedState/
 
-repo_url: https://github.com/iudhael/mecamatesignal
-repo_name: iudhael/mecamatesignal
+repo_url: https://github.com/iudhael/StripLedState
+repo_name: iudhael/StripLedState
 edit_uri: edit/main/docs/
 
 # Configuration
@@ -106,7 +106,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/iudhael/mecamatesignal
+      link: https://github.com/iudhael/StripLedState
   version:
     provider: mike
 

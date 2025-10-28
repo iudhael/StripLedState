@@ -1,10 +1,6 @@
 import typer
 from typing_extensions import Annotated
 from ledsignalisation.addr_stripled_signalisation_non_bloquant_V2 import AddrStripLedSignalisationNonBloquant2
-from emergencysignalisation.emergency_signal import EmergencySignal
-from audio.speaker import Speaker
-from audio.microphone import Microphone
-
 
 app = typer.Typer(
     name="signal",
@@ -32,16 +28,25 @@ def status_led(
     ],
 ) -> None:
     """Affiche un statut prédéfini sur la bande LED."""
+
     leds = get_leds()
 
-    if status.lower() == "ready":
+    if status.lower() == "pre_operational":
+        leds.pre_operational()
+    elif status.lower() == "ready":
         leds.ready()
-    elif status.lower() == "danger":
-        leds.danger()
-    elif status.lower() == "booting":
-        leds.booting()
+    elif status.lower() == "emergency_stop":
+        leds.emergency_stop()
+    elif status.lower() == "ready_to_go":
+        leds.ready_to_go()
+    elif status.lower() == "braking":
+        leds.braking()
+    elif status.lower() == "reverse":
+        leds.reverse()
     elif status.lower() == "hello":
         leds.hello()
+    elif status.lower() == "turn_off_all_stripled":
+        leds.turn_off_all_stripled()
     else:
         typer.echo(f"Erreur : Statut '{status}' non reconnu.", err=True)
         raise typer.Exit(1)
@@ -60,36 +65,10 @@ def turn_signal(
     leds = get_leds()
     
     if direction.lower() in ["droite", "gauche"]:
-        leds.turn(direction=direction.lower())
+        leds.turning(direction=direction.lower())
         typer.echo(f"Activation du clignotant '{direction}'.")
     else:
         typer.echo("Erreur : La direction doit être 'droite' ou 'gauche'.", err=True)
-        raise typer.Exit(1)
-
-# --- Commande pour le signal d'urgence ---
-@app.command()
-def emergency() -> None:
-    """Active le signal d'arrêt d'urgence."""
-    try:
-        EmergencySignal().emergencySignal()
-        typer.echo("Signal d'arrêt d'urgence activé.")
-    except Exception as e:
-        typer.echo(f"Erreur lors de l'activation du signal d'urgence : {e}", err=True)
-        raise typer.Exit(1)
-
-# --- Commande pour le son (Exemple) ---
-@app.command()
-def play_sound(
-    file: Annotated[str, typer.Argument(help="Chemin du fichier audio à jouer")],
-) -> None:
-    """Joue un fichier audio via le haut-parleur."""
-    try:
-        speaker = Speaker()
-        typer.echo(f"Lecture du fichier : {file} (Non implémenté dans le corps de la fonction, mais l'objet est initialisé).")
-        # Ici, vous ajouteriez l'appel à la méthode pour jouer le son
-        # speaker.play(file) 
-    except Exception as e:
-        typer.echo(f"Erreur lors de l'initialisation du haut-parleur : {e}", err=True)
         raise typer.Exit(1)
 
 if __name__ == "__main__":

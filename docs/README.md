@@ -1,6 +1,6 @@
-# MecaMate Signal Documentation
+# StripLedState Documentation
 
-This directory contains the source files for the MecaMate Signal documentation, built with MkDocs and Material theme. API documentation is automatically generated from code docstrings.
+This directory contains the source files for the StripLedState documentation, built with MkDocs and Material theme. API documentation is automatically generated from code docstrings.
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ The documentation is automatically built and deployed to GitHub Pages via GitHub
 
 1. **Push changes** to the main branch
 2. **GitHub Actions** builds the site automatically using uv
-3. **Documentation** is available at: https://iudhael.github.io/mecamatesignal/
+3. **Documentation** is available at: https://iudhael.github.io/StripLedStatel/
 
 ## Documentation Structure
 
@@ -42,7 +42,7 @@ docs/
 │   ├── basic-usage.md          # Core concepts and basic operations
 │   └── cli.md                  # Command-line interface
 ├── api-reference/              # Auto-generated from docstrings
-│   ├── mecamatesignal/              # Main package docs
+│   ├── StripLedStatel/              # Main package docs
 │   │   ├── index.md            # Package overview
 │   │   ├── core/               # Core module docs
 │   │   │   ├── AddrStripLedSignalisation.md       # first version led signalisation
@@ -94,23 +94,22 @@ The documentation is configured in `mkdocs.yml`:
 
 ````markdown
 ```python
-from mecamatesignal import AddrStripLedSignalisationNonBloquant2
-from mecamatesignal import EmergencySignal
-from mecamatesignal import Speaker
-from mecamatesignal import Microphone
+from StripLedStatel import AddrStripLedSignalisationNonBloquant2
+
 
 
 def main():
-    #speaker = Speaker()
-    #mic = Microphone()
+
     leds = AddrStripLedSignalisationNonBloquant2()
-    emergency_signal = EmergencySignal()
+
     
+
     while(1):
-        #signal 'arret d'urgence
-        emergency_signal.emergencySignal()
+
 
         leds.ready()
+        #leds.turn_off_all_stripled()
+
 
     
     

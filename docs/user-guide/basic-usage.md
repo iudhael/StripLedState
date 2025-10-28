@@ -13,21 +13,15 @@ MeMaMate Signal uses a Three-layer architecture:
 - **Microphone**: For microphone
 
 ```python
-from mecamatesignal import AddrStripLedSignalisationNonBloquant2
-from mecamatesignal import EmergencySignal
-from mecamatesignal import Speaker
-from mecamatesignal import Microphone
+from StripLedState import AddrStripLedSignalisationNonBloquant2
 
 
 def main():
-    #speaker = Speaker()
-    #mic = Microphone()
+
     leds = AddrStripLedSignalisationNonBloquant2()
-    emergency_signal = EmergencySignal()
+
     
     while(1):
-        #signal 'arret d'urgence
-        emergency_signal.emergencySignal()
 
         leds.ready()
 
