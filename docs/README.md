@@ -100,7 +100,7 @@ from StripLedStatel import AddrStripLedSignalisationNonBloquant2
 
 def main():
 
-    leds = AddrStripLedSignalisationNonBloquant2()
+    leds = AddrStripLedSignalisationNonBloquant2(9)
 
     
 
