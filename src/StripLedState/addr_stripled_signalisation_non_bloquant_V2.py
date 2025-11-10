@@ -178,7 +178,7 @@ class AddrStripLedSignalisationNonBloquant2:
             
             self.pre_operational_fading_brightness += 0.01
             
-            print(self.pre_operational_fading_brightness)
+            #print(self.pre_operational_fading_brightness)
             if self.pre_operational_fading_brightness >=  1:
                 self.pre_operational_stripled_is_on = True
                 
@@ -198,7 +198,7 @@ class AddrStripLedSignalisationNonBloquant2:
                 self.fill_segment(self.start_back_right, self.end_back_right, self.color[2], self.pre_operational_fading_brightness) # blue
             
             self.pre_operational_fading_brightness -= 0.01
-            print(self.pre_operational_fading_brightness)
+            #print(self.pre_operational_fading_brightness)
             
             if self.pre_operational_fading_brightness <=  0:
                 self.pre_operational_stripled_is_on = False
