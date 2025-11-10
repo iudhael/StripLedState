@@ -13,12 +13,12 @@ MeMaMate Signal uses a Three-layer architecture:
 - **Microphone**: For microphone
 
 ```python
-from StripLedState import AddrStripLedSignalisationNonBloquant2
+from StripLedState import AddrStripLedSignalisationNonBloquantV2
 
 
 def main():
 
-    leds = AddrStripLedSignalisationNonBloquant2(9)
+    leds = AddrStripLedSignalisationNonBloquantV2(9)
 
     
     while(1):

@@ -26,7 +26,7 @@ import neopixel
 
 NEOPIXEL_PIN = board.D12
 
-class AddrStripLedSignalisationNonBloquant2:
+class AddrStripLedSignalisationNonBloquantV2:
     def __init__(self, nbre_led_par_segment = 10):
         """
             Chaque segment (gauche, droite, milieu) à 10 leds

@@ -1,6 +1,6 @@
 import typer
 from typing_extensions import Annotated
-from ledsignalisation.addr_stripled_signalisation_non_bloquant_V2 import AddrStripLedSignalisationNonBloquant2
+from ledsignalisation.addr_stripled_signalisation_non_bloquant_V2 import AddrStripLedSignalisationNonBloquantV2
 
 app = typer.Typer(
     name="signal",
@@ -14,7 +14,7 @@ def get_leds():
     """Initialise et retourne l'objet de contrôle des LEDs non bloquantes."""
     try:
         
-        return AddrStripLedSignalisationNonBloquant2()
+        return AddrStripLedSignalisationNonBloquantV2()
     except Exception as e:
         typer.echo(f"Erreur d'initialisation des LEDs : {e}", err=True)
         raise typer.Exit(1)

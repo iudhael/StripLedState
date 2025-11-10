@@ -47,7 +47,7 @@ docs/
 │   │   ├── core/               # Core module docs
 │   │   │   ├── AddrStripLedSignalisation.md       # first version led signalisation
 │   │   │   └── AddrStripLedSignalisationNonBloquant.md     # second version led signalisation
-│   │   │   └── AddrStripLedSignalisationNonBloquant2.md     # Third version led signalisation
+│   │   │   └── AddrStripLedSignalisationNonBloquantV2.md     # Third version led signalisation
 │   │   └── logging.md          # Logging system (auto-generated)
 │   └── cli.md                  # CLI module (auto-generated)
 ├── troubleshooting.md          # Common issues and solutions
@@ -94,13 +94,13 @@ The documentation is configured in `mkdocs.yml`:
 
 ````markdown
 ```python
-from StripLedStatel import AddrStripLedSignalisationNonBloquant2
+from StripLedStatel import AddrStripLedSignalisationNonBloquantV2
 
 
 
 def main():
 
-    leds = AddrStripLedSignalisationNonBloquant2(9)
+    leds = AddrStripLedSignalisationNonBloquantV2(9)
 
     
 
