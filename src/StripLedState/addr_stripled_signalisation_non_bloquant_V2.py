@@ -93,8 +93,8 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         """ Couleurs off """
         self.off = (0, 0, 0)
-        """ rouge, vert, bleu, orange, blanc"""
-        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 72, 0), (255, 255, 255)]
+        """ rouge, vert, bleu, orange, blanc, jaune"""
+        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 72, 0), (255, 255, 255), (255, 255, 0)]
 
         """ 
         Création d'une seule instance NeoPixel pour toutes les LEDs sur une seule broche
@@ -378,7 +378,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         if self.hello_step < 6 and current_time - self.hello_last_time >= 0.5:
             """ Les steps 0, 2, 4 allument le bandeau total dans une couleur """
             if self.hello_step == 0: color_index = 1 # Vert
-            elif self.hello_step == 2: color_index = 3 # Jaune
+            elif self.hello_step == 2: color_index = 5 # Jaune
             elif self.hello_step == 4: color_index = 0 # Rouge
             else: color_index = -1 # Non utilisé
 
