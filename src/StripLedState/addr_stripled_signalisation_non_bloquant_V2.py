@@ -102,7 +102,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         """
         
         self.all_stripled = neopixel.NeoPixel(
-            NEOPIXEL_PIN, self.nbre_led_total, brightness=global_brightness, auto_write=False
+            NEOPIXEL_PIN, self.nbre_led_total, brightness=1, auto_write=False
         )
         self.all_stripled.fill(self.off)
         self.all_stripled.show()
