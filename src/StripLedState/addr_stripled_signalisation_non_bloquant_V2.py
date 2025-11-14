@@ -290,13 +290,13 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         if direction != "gauche":
             
-            self.fill_segment(self.start_front_left, self.start_front_left, self.color[4]) # blanc
-            self.fill_segment(self.start_back_left, self.start_back_left, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4]) # blanc
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], segment_brightness) # rouge faible
 
         if direction != "droite":
             
-            self.fill_segment(self.start_front_right, self.start_front_right, self.color[4]) # blanc
-            self.fill_segment(self.start_back_right, self.start_back_right, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4]) # blanc
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], segment_brightness) # rouge faible
 
         
         """allumer les deux premieres et dernieres led """
