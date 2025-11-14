@@ -95,7 +95,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         """ Couleurs off """
         self.off = (0, 0, 0)
         """ rouge, vert, bleu, orange, blanc"""
-        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 82, 0), (255, 255, 255)]
+        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 72, 0), (255, 255, 255)]
 
         """ 
         Création d'une seule instance NeoPixel pour toutes les LEDs sur une seule broche
