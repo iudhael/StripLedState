@@ -118,7 +118,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     Remplit un segment spécifique de la bande avec une couleur,
     en appliquant un niveau de brillance sur le segment.
     """
-    def fill_segment(self, start, end, color_rgb, segment_brightness):        
+    def fill_segment(self, start, end, color_rgb, segment_brightness = 0.5):        
         # S'assurer que la brillance est dans la plage [0.0, 1.0]
         segment_brightness = max(0.0, min(1.0, segment_brightness))
         
