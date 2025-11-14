@@ -179,7 +179,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             self.pre_operational_fading_brightness += 0.01
             
             #print(self.pre_operational_fading_brightness)
-            if self.pre_operational_fading_brightness >=  1:
+            if self.pre_operational_fading_brightness >=  global_brightness:
                 self.pre_operational_stripled_is_on = True
                 
                 
