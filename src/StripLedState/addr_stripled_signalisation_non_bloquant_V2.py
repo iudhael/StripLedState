@@ -276,44 +276,37 @@ class AddrStripLedSignalisationNonBloquantV2:
         """print(f"turn... {direction}")"""
         current_time = time.time()
 
-        start_front, end_front, start_back, end_back = self.get_segment_indices(direction)
+        s_front, e_front, s_back, e_back = self.get_segment_indices(direction)
 
-        start_front = start_front + 2
-        end_front = end_front - 2 
-        start_back = start_back + 2
-        end_back = end_back - 2 
-        
-
-        if start_front == -1 or start_back == -1:
-            return """Sortie si direction non valide"""
-
+        start_front = s_front + 2
+        end_front = e_front - 2 
+        start_back = s_back + 2
+        end_back = e_back - 2 
         
         """garde les leds du millieu allumées"""
         self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1]) # vert
         self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1]) # vert
-        led = 2
+
+
         if direction != "gauche":
-            s_front, e_front, s_back, e_back = self.get_segment_indices("gauche")
             
-            self.fill_segment(s_front, s_front + led, self.color[4], segment_brightness) # blanc faible
-            self.fill_segment(e_front - led, e_front, self.color[4], segment_brightness) # blanc faible
-           
-            self.fill_segment(s_back, s_back + led, self.color[0], segment_brightness) # rouge faible
-            self.fill_segment(e_back - led, e_back, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_front_left, self.start_front_left, self.color[4]) # blanc
+            self.fill_segment(self.start_back_left, self.start_back_left, self.color[0], segment_brightness) # rouge faible
 
-            
         if direction != "droite":
-            s_front, e_front, s_back, e_back = self.get_segment_indices("droite")
-
-            self.fill_segment(s_front, s_front + led, self.color[4], segment_brightness) # blanc faible
-            self.fill_segment(e_front - led, e_front, self.color[4], segment_brightness) # blanc faible
-           
-            self.fill_segment(s_back, s_back + led, self.color[0], segment_brightness) # rouge faible
-            self.fill_segment(e_back - led, e_back, self.color[0], segment_brightness) # rouge faible
-
             
+            self.fill_segment(self.start_front_right, self.start_front_right, self.color[4]) # blanc
+            self.fill_segment(self.start_back_right, self.start_back_right, self.color[0], segment_brightness) # rouge faible
+
         
+        """allumer les deux premieres et dernieres led """
+        led = 2
+        self.fill_segment(s_front, s_front + led, self.color[4], segment_brightness) # blanc faible
+        self.fill_segment(e_front - led, e_front, self.color[4], segment_brightness) # blanc faible
         
+        self.fill_segment(s_back, s_back + led, self.color[0], segment_brightness) # rouge faible
+        self.fill_segment(e_back - led, e_back, self.color[0], segment_brightness) # rouge faible
+
         if current_time - self.turning_last_time >= 0.25:
             if self.turning_stripled_is_on == False:
                 self.fill_segment(start_front, end_front, self.color[3])
