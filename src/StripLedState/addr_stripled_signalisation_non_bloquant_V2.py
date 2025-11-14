@@ -33,6 +33,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         """
         self.nbre_led_par_segment = nbre_led_par_segment 
         self.nbre_led_total = 6 * self.nbre_led_par_segment  # 60 LEDs
+        #self.global_brightness = 1
 
         """
             Indices de début et de fin pour chaque segment dans la bande unique
@@ -93,8 +94,8 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         """ Couleurs off """
         self.off = (0, 0, 0)
-        """ rouge, vert, bleu, jaune blanc"""
-        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 255, 255)]
+        """ rouge, vert, bleu, orange, blanc"""
+        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 165, 0), (255, 255, 255)]
 
         """ 
         Création d'une seule instance NeoPixel pour toutes les LEDs sur une seule broche
