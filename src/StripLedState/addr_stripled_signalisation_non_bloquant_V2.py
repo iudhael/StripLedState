@@ -33,7 +33,6 @@ class AddrStripLedSignalisationNonBloquantV2:
         """
         self.nbre_led_par_segment = nbre_led_par_segment 
         self.nbre_led_total = 6 * self.nbre_led_par_segment  # 60 LEDs
-        #self.global_brightness = 1
 
         """
             Indices de début et de fin pour chaque segment dans la bande unique
@@ -103,7 +102,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         """
         
         self.all_stripled = neopixel.NeoPixel(
-            NEOPIXEL_PIN, self.nbre_led_total, brightness=1, auto_write=False
+            NEOPIXEL_PIN, self.nbre_led_total, brightness=global_brightness, auto_write=False
         )
         self.all_stripled.fill(self.off)
         self.all_stripled.show()
@@ -119,7 +118,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     Remplit un segment spécifique de la bande avec une couleur,
     en appliquant un niveau de brillance sur le segment.
     """
-    def fill_segment(self, start, end, color_rgb, segment_brightness=1.0):        
+    def fill_segment(self, start, end, color_rgb, segment_brightness):        
         # S'assurer que la brillance est dans la plage [0.0, 1.0]
         segment_brightness = max(0.0, min(1.0, segment_brightness))
         
@@ -160,11 +159,11 @@ class AddrStripLedSignalisationNonBloquantV2:
     Purpose: Indicates system power-on and initialization phase.
 
     """
-    def pre_operational(self):
+    def pre_operational(self, global_brightness):
         """print("pre_operational ...")"""
         current_time = time.time()
 
-        if self.pre_operational_fading_brightness  <= 1 and self.pre_operational_stripled_is_on == False:
+        if self.pre_operational_fading_brightness  <= global_brightness and self.pre_operational_stripled_is_on == False:
                        
             if current_time - self.pre_operational_fading_laste_time >= 0.01:
                 
@@ -212,11 +211,12 @@ class AddrStripLedSignalisationNonBloquantV2:
     Purpose: Robot is enabled and awaiting motion commands.
 
     """
-    def ready(self):
+    def ready(self, global_brightness):
         """print("ready...")"""
         current_time = time.time()
         if current_time - self.ready_last_time >= 0.5:
             if self.ready_stripled_is_on == False:
+                self.all_stripled.brightness = global_brightness
                 self.all_stripled.fill(self.color[1]) # vert
                 self.ready_stripled_is_on = True
             else:
@@ -227,11 +227,12 @@ class AddrStripLedSignalisationNonBloquantV2:
             self.ready_last_time = current_time
 
     """Clignotement simple de toutes les LEDs en rouge"""
-    def emergency_stop(self):
+    def emergency_stop(self, global_brightness):
         """print("emergency_stop ...")"""
         current_time = time.time()
         if current_time - self.emergency_stop_last_time >= 0.25:
             if self.emergency_stop_stripled_is_on == False:
+                self.all_stripled.brightness = global_brightness
                 self.all_stripled.fill(self.color[0]) # Rouge
                 self.emergency_stop_stripled_is_on = True
             else:
@@ -249,18 +250,18 @@ class AddrStripLedSignalisationNonBloquantV2:
     Rear side LEDs              Taillights      Dim red steady
     """
     
-    def ready_to_go(self, segment_brightness = 0.05):
+    def ready_to_go(self, global_brightness):
         """print("ready to go...")"""
         current_time = time.time()
         if current_time - self.ready_to_go_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1]) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1]) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4]) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4]) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
 
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], segment_brightness) # rouge faible
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness / 2) # rouge faible
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness / 2) # rouge faible
 
             self.ready_to_go_last_time = current_time
         
@@ -273,7 +274,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     
     
     """
-    def turning(self, direction, segment_brightness = 0.05):
+    def turning(self, direction, global_brightness):
         """print(f"turn... {direction}")"""
         current_time = time.time()
 
@@ -285,33 +286,33 @@ class AddrStripLedSignalisationNonBloquantV2:
         end_back = e_back - 2 
         
         """garde les leds du millieu allumées"""
-        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1]) # vert
-        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1]) # vert
+        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
+        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
 
 
         if direction != "gauche":
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4]) # blanc
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness / 2) # rouge faible
 
         if direction != "droite":
             
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4]) # blanc
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], segment_brightness) # rouge faible
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness / 2) # rouge faible
 
         
         """allumer les deux premieres et dernieres led """
         led = 2
-        self.fill_segment(s_front, s_front + led, self.color[4], segment_brightness) # blanc faible
-        self.fill_segment(e_front - led, e_front, self.color[4], segment_brightness) # blanc faible
+        self.fill_segment(s_front, s_front + led, self.color[4], global_brightness) # blanc 
+        self.fill_segment(e_front - led, e_front, self.color[4], global_brightness) # blanc 
         
-        self.fill_segment(s_back, s_back + led, self.color[0], segment_brightness) # rouge faible
-        self.fill_segment(e_back - led, e_back, self.color[0], segment_brightness) # rouge faible
+        self.fill_segment(s_back, s_back + led, self.color[0], global_brightness / 2) # rouge faible
+        self.fill_segment(e_back - led, e_back, self.color[0], global_brightness / 2) # rouge faible
 
         if current_time - self.turning_last_time >= 0.25:
             if self.turning_stripled_is_on == False:
-                self.fill_segment(start_front, end_front, self.color[3])
-                self.fill_segment(start_back, end_back, self.color[3])
+                self.fill_segment(start_front, end_front, self.color[3], global_brightness)
+                self.fill_segment(start_back, end_back, self.color[3], global_brightness)
                 self.turning_stripled_is_on = True
             else:
                 self.fill_segment(start_front, end_front, self.off)
@@ -325,18 +326,18 @@ class AddrStripLedSignalisationNonBloquantV2:
     Braking
     Rear side LEDs: Bright red steady while braking.
     """
-    def braking(self):
+    def braking(self, global_brightness):
         """print("braking...")"""
         current_time = time.time()
         if current_time - self.braking_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1]) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1]) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4]) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4]) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
 
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0]) # rouge vif
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0]) # rouge vif
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness) # rouge vif
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness) # rouge vif
 
             self.braking_last_time = current_time
 
@@ -346,21 +347,21 @@ class AddrStripLedSignalisationNonBloquantV2:
     Remaining LEDs retain normal taillight behavior (dim red).
 
     """
-    def reverse(self, segment_brightness = 0.05):
+    def reverse(self, global_brightness):
         current_time = time.time()
         if current_time - self.ready_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1]) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1]) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4]) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4]) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
 
             half_segment = int(self.nbre_led_par_segment/2)
-            self.fill_segment(self.start_back_left, self.start_back_left + half_segment, self.color[4]) # blanc vif
-            self.fill_segment(self.start_back_right, self.start_back_right + half_segment, self.color[0]) # rouge faible
+            self.fill_segment(self.start_back_left, self.start_back_left + half_segment, self.color[4], global_brightness) # blanc vif
+            self.fill_segment(self.start_back_right, self.start_back_right + half_segment, self.color[0], global_brightness / 2) # rouge faible
 
-            self.fill_segment(self.start_back_left + half_segment , self.end_back_left , self.color[0], segment_brightness) # rouge faible
-            self.fill_segment(self.start_back_right + half_segment, self.end_back_right , self.color[4], segment_brightness) # blanc vif
+            self.fill_segment(self.start_back_left + half_segment , self.end_back_left , self.color[0], global_brightness / 2) # rouge faible
+            self.fill_segment(self.start_back_right + half_segment, self.end_back_right , self.color[4], global_brightness) # blanc vif
 
 
 
@@ -369,7 +370,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     Allumage de toutes les leds en vert puis en jaune puis en rouge
     Chaque led de chaque segment s'allument avec une couleure différente du début à la fin de facon progressive
     """
-    def hello(self):
+    def hello(self, global_brightness):
         """print("hello...")"""
         current_time = time.time()
         
@@ -382,6 +383,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             else: color_index = -1 # Non utilisé
 
             if self.hello_step in [0, 2, 4]:
+                self.all_stripled.brightness = global_brightness
                 self.all_stripled.fill(self.color[color_index])
             else: # steps 1, 3, 5 éteignent
                 self.all_stripled.fill(self.off)
@@ -396,6 +398,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 if self.hello_start <= (self.nbre_led_par_segment - window_size):
                     # Éteindre avant de défiler
                     self.turn_off_all_stripled()
+                    self.all_stripled.brightness = global_brightness
 
                     """ Allumer la fenêtre de 3 LEDs """
                     for i in range(window_size):
@@ -424,6 +427,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             if current_time - self.hello_last_time >= 0.2:
                 if self.hello_index < self.nbre_led_par_segment:
                     color_to_use = self.color[self.hello_color_index]
+                    self.all_stripled.brightness = global_brightness
     
                     """ Allumer la LED à l'index actuel dans la couleur """
                     self.all_stripled[self.start_front_left + self.hello_index] = color_to_use
