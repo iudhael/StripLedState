@@ -180,7 +180,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 self.pre_operational_stripled_is_on = True
                 
                 
-            self.pre_operational_fading_last_time = current_time 
+        
 
         if self.pre_operational_fading_brightness  >= 0 and self.pre_operational_stripled_is_on == True:
             if current_time - self.pre_operational_fading_last_time >= 0.01:
@@ -194,7 +194,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             
             if self.pre_operational_fading_brightness <=  0:
                 self.pre_operational_stripled_is_on = False
-            self.pre_operational_fading_last_time = current_time
+        self.pre_operational_fading_last_time = current_time
 
     """
     Ready (Idle, Motion Enabled)
