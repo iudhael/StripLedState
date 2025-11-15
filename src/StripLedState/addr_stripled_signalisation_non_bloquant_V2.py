@@ -171,7 +171,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
                 self.all_stripled.fill(self.color[2])  # blue
-            self.all_stripled.show()
+                self.all_stripled.show()
             
             self.pre_operational_fading_brightness +=  0.01
             
@@ -188,7 +188,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
                 self.all_stripled.fill(self.color[2])  # blue
             
-            self.all_stripled.show()
+                self.all_stripled.show()
             self.pre_operational_fading_brightness -=  0.01
             #print(self.pre_operational_fading_brightness)
             
