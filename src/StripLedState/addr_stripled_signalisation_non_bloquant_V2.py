@@ -172,6 +172,8 @@ class AddrStripLedSignalisationNonBloquantV2:
             
             if self.pre_operational_fading_brightness >=  global_brightness:
                 self.pre_operational_stripled_is_on = True
+
+        self.pre_operational_fading_last_time = current_time
         
         
         """
