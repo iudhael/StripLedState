@@ -166,7 +166,7 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         if self.pre_operational_fading_brightness  <= global_brightness and self.pre_operational_stripled_is_on == False:
                        
-            if current_time - self.pre_operational_fading_last_time >= 0.0001:
+            if current_time - self.pre_operational_fading_last_time >= 0.01:
                 
                 
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
@@ -183,7 +183,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             self.pre_operational_fading_last_time = current_time 
 
         if self.pre_operational_fading_brightness  >= 0 and self.pre_operational_stripled_is_on == True:
-            if current_time - self.pre_operational_fading_last_time >= 0.0001:
+            if current_time - self.pre_operational_fading_last_time >= 0.01:
             
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
                 self.all_stripled.fill(self.color[2])  # blue
