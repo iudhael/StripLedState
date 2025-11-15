@@ -67,7 +67,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         """ Variables de suivi d'état """
         self.pre_operational_last_time = 0
         self.pre_operational_stripled_is_on = False
-        self.pre_operational_fading_laste_time = 0
+        self.pre_operational_fading_last_time = 0
         self.pre_operational_fading_brightness = 0
 
         self.ready_last_time = 0
@@ -166,35 +166,35 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         if self.pre_operational_fading_brightness  <= global_brightness and self.pre_operational_stripled_is_on == False:
                        
-            if current_time - self.pre_operational_fading_laste_time >= 0.0001:
+            if current_time - self.pre_operational_fading_last_time >= 0.0001:
                 
                 
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
                 self.all_stripled.fill(self.color[2])  # blue
                 self.all_stripled.show()
             
-            self.pre_operational_fading_brightness +=  0.01
+            self.pre_operational_fading_brightness +=  global_brightness*0.01
             
             #print(self.pre_operational_fading_brightness)
             if self.pre_operational_fading_brightness >=  global_brightness:
                 self.pre_operational_stripled_is_on = True
                 
                 
-            self.pre_operational_last_time = current_time 
+            self.pre_operational_fading_last_time = current_time 
 
         if self.pre_operational_fading_brightness  >= 0 and self.pre_operational_stripled_is_on == True:
-            if current_time - self.pre_operational_fading_laste_time >= 0.0001:
+            if current_time - self.pre_operational_fading_last_time >= 0.0001:
             
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
                 self.all_stripled.fill(self.color[2])  # blue
             
                 self.all_stripled.show()
-            self.pre_operational_fading_brightness -=  0.01
+            self.pre_operational_fading_brightness -=  global_brightness*0.01
             #print(self.pre_operational_fading_brightness)
             
             if self.pre_operational_fading_brightness <=  0:
                 self.pre_operational_stripled_is_on = False
-            self.pre_operational_last_time = current_time
+            self.pre_operational_fading_last_time = current_time
 
     """
     Ready (Idle, Motion Enabled)
