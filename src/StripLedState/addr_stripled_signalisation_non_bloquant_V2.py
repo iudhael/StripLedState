@@ -163,7 +163,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     def pre_operational(self, global_brightness):
         """print("pre_operational ...")"""
         current_time = time.time()
-        duration = 1.5
+        duration = 1
                 
         if self.pre_operational_fading_brightness  <= global_brightness and self.pre_operational_stripled_is_on == False:
                        
