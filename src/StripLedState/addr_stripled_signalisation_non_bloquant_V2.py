@@ -177,7 +177,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 self.fill_segment(self.start_back_left, self.end_back_left, self.color[2], self.pre_operational_fading_brightness) # blue
                 self.fill_segment(self.start_back_right, self.end_back_right, self.color[2], self.pre_operational_fading_brightness) # blue
             
-            self.pre_operational_fading_brightness += global_brightness * 0.01
+            self.pre_operational_fading_brightness +=  0.01
             
             #print(self.pre_operational_fading_brightness)
             if self.pre_operational_fading_brightness >=  global_brightness:
@@ -198,7 +198,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 self.fill_segment(self.start_back_left, self.end_back_left, self.color[2], self.pre_operational_fading_brightness) # blue
                 self.fill_segment(self.start_back_right, self.end_back_right, self.color[2], self.pre_operational_fading_brightness) # blue
             
-            self.pre_operational_fading_brightness -= global_brightness * 0.01
+            self.pre_operational_fading_brightness -=  0.01
             #print(self.pre_operational_fading_brightness)
             
             if self.pre_operational_fading_brightness <=  0:
