@@ -168,14 +168,10 @@ class AddrStripLedSignalisationNonBloquantV2:
                        
             if current_time - self.pre_operational_fading_laste_time >= 0.01:
                 
-                self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[2], self.pre_operational_fading_brightness) # blue
                 
-                self.fill_segment(self.start_front_left, self.end_front_left, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_front_right, self.end_front_right, self.color[2], self.pre_operational_fading_brightness) # blue
-
-                self.fill_segment(self.start_back_left, self.end_back_left, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_back_right, self.end_back_right, self.color[2], self.pre_operational_fading_brightness) # blue
+                self.all_stripled.brightness = self.pre_operational_fading_brightness
+                self.all_stripled.fill(self.color[2])  # blue
+            self.all_stripled.show()
             
             self.pre_operational_fading_brightness +=  0.01
             
@@ -189,15 +185,10 @@ class AddrStripLedSignalisationNonBloquantV2:
         if self.pre_operational_fading_brightness  >= 0 and self.pre_operational_stripled_is_on == True:
             if current_time - self.pre_operational_fading_laste_time >= 0.01:
             
-                self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[2], self.pre_operational_fading_brightness) # blue
-                
-                self.fill_segment(self.start_front_left, self.end_front_left, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_front_right, self.end_front_right, self.color[2], self.pre_operational_fading_brightness) # blue
-
-                self.fill_segment(self.start_back_left, self.end_back_left, self.color[2], self.pre_operational_fading_brightness) # blue
-                self.fill_segment(self.start_back_right, self.end_back_right, self.color[2], self.pre_operational_fading_brightness) # blue
+                self.all_stripled.brightness = self.pre_operational_fading_brightness
+                self.all_stripled.fill(self.color[2])  # blue
             
+            self.all_stripled.show()
             self.pre_operational_fading_brightness -=  0.01
             #print(self.pre_operational_fading_brightness)
             
