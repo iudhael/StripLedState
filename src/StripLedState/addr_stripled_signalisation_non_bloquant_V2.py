@@ -39,28 +39,28 @@ class AddrStripLedSignalisationNonBloquantV2:
             Indices de début et de fin pour chaque segment dans la bande unique
         """
         """0 à 10"""
-        self.start_front_left = 0 
-        self.end_front_left = self.nbre_led_par_segment 
+        self.start_front_right = 0 
+        self.end_front_right = self.nbre_led_par_segment 
         
         """10 à 20"""
-        self.start_back_left = self.nbre_led_par_segment
-        self.end_back_left = 2 * self.nbre_led_par_segment
+        self.start_front_middle = self.nbre_led_par_segment
+        self.end_front_middle = 2 * self.nbre_led_par_segment
 
         """20 à 30"""
-        self.start_back_middle = 2 * self.nbre_led_par_segment
-        self.end_back_middle = 3 * self.nbre_led_par_segment
+        self.start_front_left = 2 * self.nbre_led_par_segment
+        self.end_front_left = 3 * self.nbre_led_par_segment
 
         """30 à 40"""
-        self.start_back_right = 3 * self.nbre_led_par_segment
-        self.end_back_right = 4 * self.nbre_led_par_segment
+        self.start_back_left = 3 * self.nbre_led_par_segment
+        self.end_back_left = 4 * self.nbre_led_par_segment
         
         """40 à 50"""
-        self.start_front_right = 4 * self.nbre_led_par_segment
-        self.end_front_right = 5 * self.nbre_led_par_segment
+        self.start_back_middle = 4 * self.nbre_led_par_segment
+        self.end_back_middle = 5 * self.nbre_led_par_segment
 
         """50 à 60"""
-        self.start_front_middle = 5 * self.nbre_led_par_segment
-        self.end_front_middle = self.nbre_led_total
+        self.start_back_right = 5 * self.nbre_led_par_segment
+        self.end_back_right = self.nbre_led_total
 
 
 
