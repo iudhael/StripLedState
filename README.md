@@ -27,7 +27,7 @@ def main():
     while(1):
 
 
-        leds.ready()
+        leds.ready(1)
 
         #leds.turn_off_all_stripled()
 
