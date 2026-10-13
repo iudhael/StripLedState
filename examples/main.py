@@ -14,6 +14,7 @@ def main():
         #leds.emergency_stop(1)
         #leds.ready_to_go(1)
         #leds.turning("droite", 1)
+        #leds.turning_braking("droite", 1)
         #leds.braking(1)
         #leds.reverse(1)
         leds.hello(1)
