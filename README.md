@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-pip install StripLedState
+pip install ./StripLedState
 ```
 
 For Raspberry Pi GPIO support:
