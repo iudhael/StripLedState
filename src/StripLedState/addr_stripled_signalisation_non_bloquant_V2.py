@@ -114,6 +114,13 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         self.reverse_last_time = 0
         self.reverse_index = 0
+
+        self.low_battery_last_time = 0
+        self.low_battery_stripled_is_on = False
+
+        self.fault_last_time = 0
+        self.fault_step = 0
+
         
         self.hello_last_time = 0
         self.hello_step = 0 
@@ -456,6 +463,56 @@ class AddrStripLedSignalisationNonBloquantV2:
 
             self.fill_segment(self.start_back_left + half_segment , self.end_back_left , self.color[0], global_brightness / self.brightness_coeff) # rouge faible
             self.fill_segment(self.start_back_right + half_segment, self.end_back_right , self.color[4], global_brightness) # blanc vif
+
+
+    """
+    Low_battery
+    All LEDs (front & rear): Orange
+    Animation: Simple 0.5 Hz blink (synchronized across all lights)
+    Purpose: Low battery level 
+
+    """
+    def low_battery(self, global_brightness):
+        """print("low battery...")"""
+        current_time = time.time()
+        if current_time - self.low_battery_last_time >= 1:
+            if self.low_battery_stripled_is_on == False:
+                self.all_stripled.brightness = global_brightness
+                self.all_stripled.fill(self.color[3]) # orange
+                self.low_battery_stripled_is_on = True
+            else:
+                self.all_stripled.fill(self.off) # Éteint
+                self.low_battery_stripled_is_on = False
+            
+            self.all_stripled.show()
+            self.low_battery_last_time = current_time
+
+
+    """
+    Fault
+    All LEDs (front & rear): alternate between red and orange every 0.5 second
+    Animation: Simple 1 Hz blink (synchronized across all lights)
+    Purpose: The robot isn't working
+
+    """
+    def fault(self, global_brightness):
+        """print("fault...")"""
+        current_time = time.time()
+        if current_time - self.fault_last_time >= 0.5:
+            """ Les steps 0, 1 allument le bandeau total dans une couleur """
+            
+            if self.fault_step == 0:
+                color_index = 0 # red
+                self.fault_step = 1
+            elif self.fault_step == 1: 
+                color_index = 3 # orange
+                self.fault_step = 0
+            
+            
+            self.all_stripled.brightness = global_brightness
+            self.all_stripled.fill(self.color[color_index])
+            self.all_stripled.show()
+            self.fault_last_time = current_time
 
 
 

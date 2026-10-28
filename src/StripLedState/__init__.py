@@ -14,6 +14,8 @@ from .addr_stripled_signalisation_non_bloquant_V2 import (
     # turning_braking,
     # braking,
     # reverse,
+    # low_battery,
+    # fault,
     # hello,
 )
 
@@ -34,5 +36,7 @@ __all__ = [
     # turning_braking,
     # "braking",
     # "reverse",
+    # low_battery,
+    # fault,
     # "hello",
 ]

@@ -17,6 +17,8 @@ def main():
         #leds.turning_braking("droite", 1)
         #leds.braking(1)
         #leds.reverse(1)
+        #leds.low_battery(1)
+        #leds.fault(1)
         leds.hello(1)
 
         #leds.turn_off_all_stripled()
