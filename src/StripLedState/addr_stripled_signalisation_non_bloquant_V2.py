@@ -130,8 +130,20 @@ class AddrStripLedSignalisationNonBloquantV2:
 
         """ Couleurs off """
         self.off = (0, 0, 0)
-        """ rouge, vert, bleu, orange, blanc, jaune"""
-        self.color = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 72, 0), (255, 255, 255), (255, 255, 0)]
+        """ rouge, vert, bleu, orange, blanc, jaune, violet"""
+        self.color = {
+            "rouge" : (255, 0, 0),
+            "vert" : (0, 255, 0),
+            "bleu" : (0, 0, 255),
+            "orange" : (255, 72, 0),
+            "blanc" : (255, 255, 255),
+            "jaune" : (255, 255, 0),
+            "violet" : (150, 0, 255),
+        }
+        self.color_values = list(self.color.values())
+        
+
+        
 
         """ 
         Création d'une seule instance NeoPixel pour toutes les LEDs sur une seule broche
@@ -196,7 +208,7 @@ class AddrStripLedSignalisationNonBloquantV2:
     Purpose: Indicates system power-on and initialization phase.
 
     """
-    def pre_operational(self, global_brightness):
+    def pre_operational(self, global_brightness, default_color="bleu"):
         """print("pre_operational ...")"""
         current_time = time.time()
         duration = 1
@@ -207,7 +219,7 @@ class AddrStripLedSignalisationNonBloquantV2:
                 
                 
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
-                self.all_stripled.fill(self.color[2])  # blue
+                self.all_stripled.fill(self.color.get(default_color))  # blue
                 self.all_stripled.show()
             
             self.pre_operational_fading_brightness +=  (global_brightness / duration) * (current_time - self.pre_operational_fading_last_time)
@@ -223,7 +235,7 @@ class AddrStripLedSignalisationNonBloquantV2:
             if current_time - self.pre_operational_fading_last_time >= 0.01:
             
                 self.all_stripled.brightness = self.pre_operational_fading_brightness
-                self.all_stripled.fill(self.color[2])  # blue
+                self.all_stripled.fill(self.color.get(default_color))  # blue
             
                 self.all_stripled.show()
             self.pre_operational_fading_brightness -=  (global_brightness / duration) * (current_time - self.pre_operational_fading_last_time)
@@ -248,7 +260,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         if current_time - self.ready_last_time >= 0.5:
             if self.ready_stripled_is_on == False:
                 self.all_stripled.brightness = global_brightness
-                self.all_stripled.fill(self.color[1]) # vert
+                self.all_stripled.fill(self.color.get("vert")) # vert
                 self.ready_stripled_is_on = True
             else:
                 self.all_stripled.fill(self.off) # Éteint
@@ -264,7 +276,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         if current_time - self.emergency_stop_last_time >= 0.25:
             if self.emergency_stop_stripled_is_on == False:
                 self.all_stripled.brightness = global_brightness
-                self.all_stripled.fill(self.color[0]) # Rouge
+                self.all_stripled.fill(self.color.get("rouge")) # Rouge
                 self.emergency_stop_stripled_is_on = True
             else:
                 self.all_stripled.fill(self.off)
@@ -285,14 +297,14 @@ class AddrStripLedSignalisationNonBloquantV2:
         """print("ready to go...")"""
         current_time = time.time()
         if current_time - self.ready_to_go_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color.get("vert"), global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color.get("vert"), global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color.get("blanc"), global_brightness) # blanc
 
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
 
             self.ready_to_go_last_time = current_time
         
@@ -317,33 +329,33 @@ class AddrStripLedSignalisationNonBloquantV2:
         end_back = e_back - 2 
         
         """garde les leds du millieu allumées"""
-        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
-        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
+        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color.get("vert"), global_brightness) # vert
+        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color.get("vert"), global_brightness) # vert
 
 
         if direction != "gauche":
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
 
         if direction != "droite":
             
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
 
         
         """allumer les deux premieres et dernieres led """
         led = 2
-        self.fill_segment(s_front, s_front + led, self.color[4], global_brightness) # blanc 
-        self.fill_segment(e_front - led, e_front, self.color[4], global_brightness) # blanc 
+        self.fill_segment(s_front, s_front + led, self.color.get("blanc"), global_brightness) # blanc 
+        self.fill_segment(e_front - led, e_front, self.color.get("blanc"), global_brightness) # blanc 
         
-        self.fill_segment(s_back, s_back + led, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
-        self.fill_segment(e_back - led, e_back, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
+        self.fill_segment(s_back, s_back + led, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
+        self.fill_segment(e_back - led, e_back, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
 
         if current_time - self.turning_last_time >= 0.5:
             if self.turning_stripled_is_on == False:
-                self.fill_segment(start_front, end_front, self.color[3], global_brightness)
-                self.fill_segment(start_back, end_back, self.color[3], global_brightness)
+                self.fill_segment(start_front, end_front, self.color.get("orange"), global_brightness)
+                self.fill_segment(start_back, end_back, self.color.get("orange"), global_brightness)
                 self.turning_stripled_is_on = True
             else:
                 self.fill_segment(start_front, end_front, self.off)
@@ -379,33 +391,33 @@ class AddrStripLedSignalisationNonBloquantV2:
         end_back = e_back - 2 
         
         """garde les leds du millieu allumées"""
-        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
-        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
+        self.fill_segment(self.start_front_middle, self.end_front_middle, self.color.get("vert"), global_brightness) # vert
+        self.fill_segment(self.start_back_middle, self.end_back_middle, self.color.get("vert"), global_brightness) # vert
 
 
         if direction != "gauche":
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness) # rouge 
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color.get("rouge"), global_brightness) # rouge 
 
         if direction != "droite":
             
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness) # rouge
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color.get("rouge"), global_brightness) # rouge
 
         
         """allumer les deux premieres et dernieres led """
         led = 2
-        self.fill_segment(s_front, s_front + led, self.color[4], global_brightness) # blanc 
-        self.fill_segment(e_front - led, e_front, self.color[4], global_brightness) # blanc 
+        self.fill_segment(s_front, s_front + led, self.color.get("blanc"), global_brightness) # blanc 
+        self.fill_segment(e_front - led, e_front, self.color.get("blanc"), global_brightness) # blanc 
         
-        self.fill_segment(s_back, s_back + led, self.color[0], global_brightness) # rouge 
-        self.fill_segment(e_back - led, e_back, self.color[0], global_brightness) # rouge 
+        self.fill_segment(s_back, s_back + led, self.color.get("rouge"), global_brightness) # rouge 
+        self.fill_segment(e_back - led, e_back, self.color.get("rouge"), global_brightness) # rouge 
 
         if current_time - self.turning_last_time >= 0.5:
             if self.turning_stripled_is_on == False:
-                self.fill_segment(start_front, end_front, self.color[3], global_brightness)
-                self.fill_segment(start_back, end_back, self.color[3], global_brightness)
+                self.fill_segment(start_front, end_front, self.color.get("orange"), global_brightness) # orange
+                self.fill_segment(start_back, end_back, self.color.get("orange"), global_brightness)
                 self.turning_stripled_is_on = True
             else:
                 self.fill_segment(start_front, end_front, self.off)
@@ -431,14 +443,14 @@ class AddrStripLedSignalisationNonBloquantV2:
         """print("braking...")"""
         current_time = time.time()
         if current_time - self.braking_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color.get("vert"), global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color.get("vert"), global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color.get("blanc"), global_brightness) # blanc
 
-            self.fill_segment(self.start_back_left, self.end_back_left, self.color[0], global_brightness) # rouge vif
-            self.fill_segment(self.start_back_right, self.end_back_right, self.color[0], global_brightness) # rouge vif
+            self.fill_segment(self.start_back_left, self.end_back_left, self.color.get("0"), global_brightness) # rouge vif
+            self.fill_segment(self.start_back_right, self.end_back_right, self.color.get("0"), global_brightness) # rouge vif
 
             self.braking_last_time = current_time
 
@@ -451,18 +463,18 @@ class AddrStripLedSignalisationNonBloquantV2:
     def reverse(self, global_brightness):
         current_time = time.time()
         if current_time - self.ready_last_time >= 0.5:
-            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color[1], global_brightness) # vert
-            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color[1], global_brightness) # vert
+            self.fill_segment(self.start_front_middle, self.end_front_middle, self.color.get("vert"), global_brightness) # vert
+            self.fill_segment(self.start_back_middle, self.end_back_middle, self.color.get("vert"), global_brightness) # vert
             
-            self.fill_segment(self.start_front_left, self.end_front_left, self.color[4], global_brightness) # blanc
-            self.fill_segment(self.start_front_right, self.end_front_right, self.color[4], global_brightness) # blanc
+            self.fill_segment(self.start_front_left, self.end_front_left, self.color.get("blanc"), global_brightness) # blanc
+            self.fill_segment(self.start_front_right, self.end_front_right, self.color.get("blanc"), global_brightness) # blanc
 
             half_segment = int(self.nbre_led_par_segment/2)
-            self.fill_segment(self.start_back_left, self.start_back_left + half_segment, self.color[4], global_brightness) # blanc vif
-            self.fill_segment(self.start_back_right, self.start_back_right + half_segment, self.color[0], global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_back_left, self.start_back_left + half_segment, self.color.get("blanc"), global_brightness) # blanc vif
+            self.fill_segment(self.start_back_right, self.start_back_right + half_segment, self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
 
-            self.fill_segment(self.start_back_left + half_segment , self.end_back_left , self.color[0], global_brightness / self.brightness_coeff) # rouge faible
-            self.fill_segment(self.start_back_right + half_segment, self.end_back_right , self.color[4], global_brightness) # blanc vif
+            self.fill_segment(self.start_back_left + half_segment , self.end_back_left , self.color.get("rouge"), global_brightness / self.brightness_coeff) # rouge faible
+            self.fill_segment(self.start_back_right + half_segment, self.end_back_right , self.color.get("blanc"), global_brightness) # blanc vif
 
 
     """
@@ -478,7 +490,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         if current_time - self.low_battery_last_time >= 1:
             if self.low_battery_stripled_is_on == False:
                 self.all_stripled.brightness = global_brightness
-                self.all_stripled.fill(self.color[3]) # orange
+                self.all_stripled.fill(self.color.get("orange")) # orange
                 self.low_battery_stripled_is_on = True
             else:
                 self.all_stripled.fill(self.off) # Éteint
@@ -502,18 +514,30 @@ class AddrStripLedSignalisationNonBloquantV2:
             """ Les steps 0, 1 allument le bandeau total dans une couleur """
             
             if self.fault_step == 0:
-                color_index = 0 # red
+                color_index = "rouge" # red
                 self.fault_step = 1
             elif self.fault_step == 1: 
-                color_index = 3 # orange
+                color_index = "orange" # orange
                 self.fault_step = 0
             
             
             self.all_stripled.brightness = global_brightness
-            self.all_stripled.fill(self.color[color_index])
+            self.all_stripled.fill(self.color.get(color_index))
             self.all_stripled.show()
             self.fault_last_time = current_time
 
+
+
+    """
+    localization_lost 
+    All LEDs (front & rear): violet
+    Animation: Breathing pattern at ~0.5 Hz
+    Purpose: Indicates that the robot is lost.
+
+    """
+    def localization_lost(self, global_brightness):
+        """print("localization_lost  ...")"""
+        self.pre_operational(self, global_brightness, default_color="violet")
 
 
     """
@@ -528,14 +552,14 @@ class AddrStripLedSignalisationNonBloquantV2:
         """ Séquence de clignotements couleur par couleur (Vert, Jaune, Rouge) """
         if self.hello_step < 6 and current_time - self.hello_last_time >= 0.5:
             """ Les steps 0, 2, 4 allument le bandeau total dans une couleur """
-            if self.hello_step == 0: color_index = 1 # Vert
-            elif self.hello_step == 2: color_index = 5 # Jaune
-            elif self.hello_step == 4: color_index = 0 # Rouge
+            if self.hello_step == 0: color_index = "vert" # Vert
+            elif self.hello_step == 2: color_index = "jaune" # Jaune
+            elif self.hello_step == 4: color_index = "rouge" # Rouge
             else: color_index = -1 # Non utilisé
 
             if self.hello_step in [0, 2, 4]:
                 self.all_stripled.brightness = global_brightness
-                self.all_stripled.fill(self.color[color_index])
+                self.all_stripled.fill(self.color.get(color_index))
             else: # steps 1, 3, 5 éteignent
                 self.all_stripled.fill(self.off)
             
@@ -553,14 +577,14 @@ class AddrStripLedSignalisationNonBloquantV2:
 
                     """ Allumer la fenêtre de 3 LEDs """
                     for i in range(window_size):
-                        self.all_stripled[self.start_front_middle + self.hello_start + i] = self.color[2]
-                        self.all_stripled[self.start_back_middle + self.hello_start + i] = self.color[2]
+                        self.all_stripled[self.start_front_middle + self.hello_start + i] = self.color.get("bleu")
+                        self.all_stripled[self.start_back_middle + self.hello_start + i] = self.color.get("bleu")
                         
-                        self.all_stripled[self.start_front_left + self.hello_start + i] = self.color[2]
-                        self.all_stripled[self.start_back_left + self.hello_start + i] = self.color[2]
+                        self.all_stripled[self.start_front_left + self.hello_start + i] = self.color.get("bleu")
+                        self.all_stripled[self.start_back_left + self.hello_start + i] = self.color.get("bleu")
 
-                        self.all_stripled[self.start_front_right + self.hello_start + i] = self.color[2]
-                        self.all_stripled[self.start_back_right + self.hello_start + i] = self.color[2]
+                        self.all_stripled[self.start_front_right + self.hello_start + i] = self.color.get("bleu")
+                        self.all_stripled[self.start_back_right + self.hello_start + i] = self.color.get("bleu")
                         
                     self.all_stripled.show()
                     self.hello_start += 1
@@ -577,7 +601,7 @@ class AddrStripLedSignalisationNonBloquantV2:
         if self.hello_step == 7:
             if current_time - self.hello_last_time >= 0.2:
                 if self.hello_index < self.nbre_led_par_segment:
-                    color_to_use = self.color[self.hello_color_index]
+                    color_to_use = self.color_values[self.hello_color_index]
                     self.all_stripled.brightness = global_brightness
     
                     """ Allumer la LED à l'index actuel dans la couleur """

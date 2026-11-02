@@ -19,6 +19,7 @@ def main():
         #leds.reverse(1)
         #leds.low_battery(1)
         #leds.fault(1)
+        #localization_lost(1, )
         leds.hello(1)
 
         #leds.turn_off_all_stripled()

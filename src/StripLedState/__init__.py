@@ -16,6 +16,7 @@ from .addr_stripled_signalisation_non_bloquant_V2 import (
     # reverse,
     # low_battery,
     # fault,
+    #localization_lost,
     # hello,
 )
 
@@ -38,5 +39,6 @@ __all__ = [
     # "reverse",
     # low_battery,
     # fault,
+    #localization_lost,
     # "hello",
 ]
